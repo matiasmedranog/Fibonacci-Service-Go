@@ -3,18 +3,22 @@ package main
 import (
     "fmt"
     "log"
+    "strconv"
     "net/http"
 )
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hello Worl")
+func Fibonacci(n int) int {
+    if n <= 1 {
+        return n
+    }
+    return Fibonacci(n-1) + Fibonacci(n-2)
 }
 
-func handleRequest() {
-    http.HandleFunc("/", homePage)
-    log.Fatal(http.ListenAndServe(":8081", nil))
+func homePage(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Fibonacci: " + strconv.Itoa(Fibonacci(8)))
 }
 
 func main() {
-    handleRequest()
+    http.HandleFunc("/", homePage)
+    log.Fatal(http.ListenAndServe(":8081", nil))
 }
